@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "model": "meta-llama/Llama-3-70B-Instruct",
+    "cluster": "8x H100 SXM5, 4x A100, 4x L40S",
+    "duration_seconds": 600,
+    "prefix_caching_enabled": true,
+    "prefix_cache_type": "radix_tree",
+    "paged_attention": true,
+    "timestamp": "2025-03-14T02:18:42Z"
+  },
+  "results": [
+    {
+      "concurrency": 100,
+      "p50_ms": 12,
+      "p75_ms": 19,
+      "p90_ms": 24,
+      "p95_ms": 31,
+      "p99_ms": 52,
+      "max_ms": 98,
+      "mean_ms": 16,
+      "stddev_ms": 10
+    },
+    {
+      "concurrency": 250,
+      "p50_ms": 19,
+      "p75_ms": 30,
+      "p90_ms": 38,
+      "p95_ms": 48,
+      "p99_ms": 71,
+      "max_ms": 142,
+      "mean_ms": 24,
+      "stddev_ms": 14
+    },
+    {
+      "concurrency": 500,
+      "p50_ms": 29,
+      "p75_ms": 42,
+      "p90_ms": 51,
+      "p95_ms": 62,
+      "p99_ms": 104,
+      "max_ms": 228,
+      "mean_ms": 35,
+      "stddev_ms": 21
+    },
+    {
+      "concurrency": 750,
+      "p50_ms": 48,
+      "p75_ms": 68,
+      "p90_ms": 86,
+      "p95_ms": 112,
+      "p99_ms": 178,
+      "max_ms": 384,
+      "mean_ms": 56,
+      "stddev_ms": 32
+    },
+    {
+      "concurrency": 1000,
+      "p50_ms": 78,
+      "p75_ms": 118,
+      "p90_ms": 152,
+      "p95_ms": 198,
+      "p99_ms": 302,
+      "max_ms": 648,
+      "mean_ms": 94,
+      "stddev_ms": 52
+    }
+  ],
+  "without_prefix_caching": [
+    {
+      "concurrency": 500,
+      "p50_ms": 72,
+      "p75_ms": 118,
+      "p90_ms": 158,
+      "p95_ms": 195,
+      "p99_ms": 312,
+      "max_ms": 524,
+      "mean_ms": 86,
+      "stddev_ms": 48
+    }
+  ]
+}

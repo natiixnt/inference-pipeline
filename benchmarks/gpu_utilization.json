@@ -1,0 +1,199 @@
+{
+  "metadata": {
+    "concurrency": 500,
+    "duration_seconds": 600,
+    "sampling_interval_ms": 100,
+    "collector": "dcgm-exporter",
+    "tensor_parallel": 8,
+    "paged_attention": true,
+    "timestamp": "2025-03-14T02:18:42Z"
+  },
+  "devices": [
+    {
+      "device_id": "gpu-h100-0",
+      "gpu_type": "H100_SXM5",
+      "sm_utilization_pct": 93,
+      "memory_bandwidth_utilization_pct": 88,
+      "memory_allocated_pct": 94,
+      "tensor_core_utilization_pct": 90,
+      "power_draw_watts": 672,
+      "temperature_celsius": 73,
+      "pcie_throughput_gbps": 52.4
+    },
+    {
+      "device_id": "gpu-h100-1",
+      "gpu_type": "H100_SXM5",
+      "sm_utilization_pct": 92,
+      "memory_bandwidth_utilization_pct": 87,
+      "memory_allocated_pct": 93,
+      "tensor_core_utilization_pct": 89,
+      "power_draw_watts": 668,
+      "temperature_celsius": 72,
+      "pcie_throughput_gbps": 51.8
+    },
+    {
+      "device_id": "gpu-h100-2",
+      "gpu_type": "H100_SXM5",
+      "sm_utilization_pct": 91,
+      "memory_bandwidth_utilization_pct": 86,
+      "memory_allocated_pct": 92,
+      "tensor_core_utilization_pct": 88,
+      "power_draw_watts": 664,
+      "temperature_celsius": 71,
+      "pcie_throughput_gbps": 51.2
+    },
+    {
+      "device_id": "gpu-h100-3",
+      "gpu_type": "H100_SXM5",
+      "sm_utilization_pct": 91,
+      "memory_bandwidth_utilization_pct": 85,
+      "memory_allocated_pct": 91,
+      "tensor_core_utilization_pct": 88,
+      "power_draw_watts": 660,
+      "temperature_celsius": 70,
+      "pcie_throughput_gbps": 50.6
+    },
+    {
+      "device_id": "gpu-h100-4",
+      "gpu_type": "H100_SXM5",
+      "sm_utilization_pct": 92,
+      "memory_bandwidth_utilization_pct": 87,
+      "memory_allocated_pct": 93,
+      "tensor_core_utilization_pct": 89,
+      "power_draw_watts": 666,
+      "temperature_celsius": 72,
+      "pcie_throughput_gbps": 51.6
+    },
+    {
+      "device_id": "gpu-h100-5",
+      "gpu_type": "H100_SXM5",
+      "sm_utilization_pct": 91,
+      "memory_bandwidth_utilization_pct": 86,
+      "memory_allocated_pct": 92,
+      "tensor_core_utilization_pct": 88,
+      "power_draw_watts": 662,
+      "temperature_celsius": 71,
+      "pcie_throughput_gbps": 51.0
+    },
+    {
+      "device_id": "gpu-h100-6",
+      "gpu_type": "H100_SXM5",
+      "sm_utilization_pct": 90,
+      "memory_bandwidth_utilization_pct": 85,
+      "memory_allocated_pct": 91,
+      "tensor_core_utilization_pct": 87,
+      "power_draw_watts": 658,
+      "temperature_celsius": 70,
+      "pcie_throughput_gbps": 50.4
+    },
+    {
+      "device_id": "gpu-h100-7",
+      "gpu_type": "H100_SXM5",
+      "sm_utilization_pct": 89,
+      "memory_bandwidth_utilization_pct": 84,
+      "memory_allocated_pct": 90,
+      "tensor_core_utilization_pct": 86,
+      "power_draw_watts": 654,
+      "temperature_celsius": 69,
+      "pcie_throughput_gbps": 49.8
+    },
+    {
+      "device_id": "gpu-a100-0",
+      "gpu_type": "A100_SXM4",
+      "sm_utilization_pct": 86,
+      "memory_bandwidth_utilization_pct": 80,
+      "memory_allocated_pct": 89,
+      "tensor_core_utilization_pct": 83,
+      "power_draw_watts": 398,
+      "temperature_celsius": 66,
+      "pcie_throughput_gbps": 41.2
+    },
+    {
+      "device_id": "gpu-a100-1",
+      "gpu_type": "A100_SXM4",
+      "sm_utilization_pct": 85,
+      "memory_bandwidth_utilization_pct": 79,
+      "memory_allocated_pct": 88,
+      "tensor_core_utilization_pct": 82,
+      "power_draw_watts": 394,
+      "temperature_celsius": 65,
+      "pcie_throughput_gbps": 40.6
+    },
+    {
+      "device_id": "gpu-a100-2",
+      "gpu_type": "A100_SXM4",
+      "sm_utilization_pct": 84,
+      "memory_bandwidth_utilization_pct": 78,
+      "memory_allocated_pct": 87,
+      "tensor_core_utilization_pct": 81,
+      "power_draw_watts": 390,
+      "temperature_celsius": 64,
+      "pcie_throughput_gbps": 40.0
+    },
+    {
+      "device_id": "gpu-a100-3",
+      "gpu_type": "A100_SXM4",
+      "sm_utilization_pct": 83,
+      "memory_bandwidth_utilization_pct": 77,
+      "memory_allocated_pct": 86,
+      "tensor_core_utilization_pct": 80,
+      "power_draw_watts": 386,
+      "temperature_celsius": 63,
+      "pcie_throughput_gbps": 39.4
+    },
+    {
+      "device_id": "gpu-l40s-0",
+      "gpu_type": "L40S",
+      "sm_utilization_pct": 79,
+      "memory_bandwidth_utilization_pct": 74,
+      "memory_allocated_pct": 83,
+      "tensor_core_utilization_pct": 76,
+      "power_draw_watts": 296,
+      "temperature_celsius": 60,
+      "pcie_throughput_gbps": 30.2
+    },
+    {
+      "device_id": "gpu-l40s-1",
+      "gpu_type": "L40S",
+      "sm_utilization_pct": 78,
+      "memory_bandwidth_utilization_pct": 73,
+      "memory_allocated_pct": 82,
+      "tensor_core_utilization_pct": 75,
+      "power_draw_watts": 292,
+      "temperature_celsius": 59,
+      "pcie_throughput_gbps": 29.8
+    },
+    {
+      "device_id": "gpu-l40s-2",
+      "gpu_type": "L40S",
+      "sm_utilization_pct": 77,
+      "memory_bandwidth_utilization_pct": 72,
+      "memory_allocated_pct": 81,
+      "tensor_core_utilization_pct": 74,
+      "power_draw_watts": 288,
+      "temperature_celsius": 58,
+      "pcie_throughput_gbps": 29.4
+    },
+    {
+      "device_id": "gpu-l40s-3",
+      "gpu_type": "L40S",
+      "sm_utilization_pct": 76,
+      "memory_bandwidth_utilization_pct": 71,
+      "memory_allocated_pct": 80,
+      "tensor_core_utilization_pct": 73,
+      "power_draw_watts": 284,
+      "temperature_celsius": 57,
+      "pcie_throughput_gbps": 29.0
+    }
+  ],
+  "cluster_summary": {
+    "avg_sm_utilization_pct": 86.1,
+    "avg_memory_bw_utilization_pct": 80.8,
+    "avg_memory_allocated_pct": 88.3,
+    "avg_tensor_core_pct": 83.1,
+    "total_power_draw_watts": 8132,
+    "h100_avg_sm_pct": 91.1,
+    "a100_avg_sm_pct": 84.5,
+    "l40s_avg_sm_pct": 77.5
+  }
+}

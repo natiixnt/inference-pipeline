@@ -1,0 +1,147 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gpu-scheduler-config
+  namespace: inference
+  labels:
+    app.kubernetes.io/name: inference-pipeline
+    app.kubernetes.io/component: scheduler
+data:
+  scheduler.yaml: |
+    # GPU Scheduler Configuration
+    scheduler:
+      tick_interval_ms: 5
+      preemption_threshold_ms: 80
+      defrag_threshold: 0.15
+      max_preemptions_per_request: 3
+      starvation_timeout_ms: 30000
+
+    # GPU pool definitions
+    gpu_pools:
+      - name: h100-pool
+        gpu_type: H100
+        memory_gb: 80
+        compute_capability: "9.0"
+        interconnect: nvlink
+        max_tensor_parallel: 8
+        preferred_models:
+          - "llama-3-70b"
+          - "mixtral-8x22b"
+        scheduling_weight: 3
+
+      - name: a100-pool
+        gpu_type: A100
+        memory_gb: 80
+        compute_capability: "8.0"
+        interconnect: nvlink
+        max_tensor_parallel: 8
+        preferred_models:
+          - "llama-3-70b"
+          - "codellama-34b"
+        scheduling_weight: 2
+
+      - name: l40s-pool
+        gpu_type: L40S
+        memory_gb: 48
+        compute_capability: "8.9"
+        interconnect: pcie
+        max_tensor_parallel: 2
+        preferred_models:
+          - "llama-3-8b"
+          - "mistral-7b"
+        scheduling_weight: 1
+
+    # Memory management
+    memory:
+      kv_cache_fraction: 0.75          # Fraction of free memory for KV-cache
+      activation_headroom_gb: 2.0      # Reserved for activations
+      defrag_cooldown_s: 60            # Minimum time between defragmentations
+      oom_kill_threshold: 0.98         # Emergency eviction trigger
+      watermark_low: 0.60              # Start admitting more aggressively
+      watermark_high: 0.85             # Start throttling admissions
+
+    # Priority and preemption policy
+    priority:
+      levels:
+        critical:
+          value: 0
+          preemptible: false
+          max_queue_time_ms: 1000
+        realtime:
+          value: 1
+          preemptible: false
+          max_queue_time_ms: 2000
+        high:
+          value: 2
+          preemptible: false
+          max_queue_time_ms: 5000
+        normal:
+          value: 3
+          preemptible: true
+          max_queue_time_ms: 30000
+        low:
+          value: 4
+          preemptible: true
+          max_queue_time_ms: 120000
+        preemptible:
+          value: 5
+          preemptible: true
+          max_queue_time_ms: 300000
+
+      # Fairness constraints
+      fairness:
+        enable_starvation_prevention: true
+        promotion_interval_ms: 10000
+        max_priority_inversion_ms: 60000
+
+    # Model placement rules
+    placement:
+      # Prefer co-locating model and its draft model on same node
+      colocation_preference:
+        - target: "llama-3-70b"
+          draft: "llama-3-8b"
+          same_node: true
+
+      # Anti-affinity: spread replicas across failure domains
+      anti_affinity:
+        topology_key: "topology.kubernetes.io/zone"
+        max_replicas_per_zone: 2
+
+      # GPU type requirements per model size
+      model_gpu_requirements:
+        "70b+":
+          min_gpu_memory_gb: 80
+          min_tensor_parallel: 4
+          allowed_gpu_types: ["H100", "A100"]
+        "30b-70b":
+          min_gpu_memory_gb: 48
+          min_tensor_parallel: 2
+          allowed_gpu_types: ["H100", "A100", "L40S"]
+        "<30b":
+          min_gpu_memory_gb: 24
+          min_tensor_parallel: 1
+          allowed_gpu_types: ["H100", "A100", "L40S"]
+
+    # Autoscaling triggers
+    autoscaling:
+      scale_up_triggers:
+        - metric: queue_depth
+          threshold: 50
+          duration_s: 30
+        - metric: p95_latency_ms
+          threshold: 150
+          duration_s: 60
+        - metric: gpu_utilization
+          threshold: 0.90
+          duration_s: 120
+
+      scale_down_triggers:
+        - metric: gpu_utilization
+          threshold: 0.30
+          duration_s: 300
+        - metric: queue_depth
+          threshold: 5
+          duration_s: 300
+
+      cooldown_s: 120
+      max_scale_step: 2

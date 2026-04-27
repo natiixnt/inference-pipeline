@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "model": "meta-llama/Llama-3-70B-Instruct",
+    "draft_model": "meta-llama/Llama-3-8B-Instruct",
+    "cluster": "8x H100 SXM5, 4x A100, 4x L40S",
+    "duration_seconds": 600,
+    "tensor_parallel": 8,
+    "paged_attention": true,
+    "radix_prefix_cache": true,
+    "timestamp": "2025-03-14T02:18:42Z"
+  },
+  "results": [
+    {
+      "concurrency": 1,
+      "throughput_tokens_per_sec": 5840,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 10,
+      "throughput_tokens_per_sec": 22600,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 25,
+      "throughput_tokens_per_sec": 37200,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 50,
+      "throughput_tokens_per_sec": 48100,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 100,
+      "throughput_tokens_per_sec": 58900,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 150,
+      "throughput_tokens_per_sec": 89400,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 200,
+      "throughput_tokens_per_sec": 116800,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 250,
+      "throughput_tokens_per_sec": 138200,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 300,
+      "throughput_tokens_per_sec": 164800,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 400,
+      "throughput_tokens_per_sec": 208400,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 500,
+      "throughput_tokens_per_sec": 244800,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 600,
+      "throughput_tokens_per_sec": 254200,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 750,
+      "throughput_tokens_per_sec": 261400,
+      "system": "inference_pipeline"
+    },
+    {
+      "concurrency": 100,
+      "throughput_tokens_per_sec": 41800,
+      "system": "vllm"
+    },
+    {
+      "concurrency": 250,
+      "throughput_tokens_per_sec": 89200,
+      "system": "vllm"
+    },
+    {
+      "concurrency": 500,
+      "throughput_tokens_per_sec": 142600,
+      "system": "vllm"
+    },
+    {
+      "concurrency": 100,
+      "throughput_tokens_per_sec": 38400,
+      "system": "tgi"
+    },
+    {
+      "concurrency": 250,
+      "throughput_tokens_per_sec": 82100,
+      "system": "tgi"
+    },
+    {
+      "concurrency": 500,
+      "throughput_tokens_per_sec": 131800,
+      "system": "tgi"
+    },
+    {
+      "concurrency": 100,
+      "throughput_tokens_per_sec": 24600,
+      "system": "triton_ft"
+    },
+    {
+      "concurrency": 250,
+      "throughput_tokens_per_sec": 51300,
+      "system": "triton_ft"
+    },
+    {
+      "concurrency": 500,
+      "throughput_tokens_per_sec": 78200,
+      "system": "triton_ft"
+    }
+  ]
+}

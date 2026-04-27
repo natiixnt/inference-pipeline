@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "target_model": "meta-llama/Llama-3-70B-Instruct",
+    "temperature": 0.8,
+    "top_p": 0.95,
+    "num_samples": 10000,
+    "adaptive_draft_length": true,
+    "timestamp": "2025-03-14T02:18:42Z"
+  },
+  "results": [
+    {
+      "draft_model": "meta-llama/Llama-3-8B-Instruct",
+      "target_model": "meta-llama/Llama-3-70B-Instruct",
+      "temperature": 0.8,
+      "acceptance_rate": 0.87,
+      "effective_speedup": 3.1,
+      "optimal_draft_length": 6,
+      "adaptive_k_range": [3, 8],
+      "acceptance_by_position": [0.95, 0.93, 0.89, 0.85, 0.81, 0.76],
+      "acceptance_by_task": {
+        "chat": 0.91,
+        "code": 0.80,
+        "reasoning": 0.77,
+        "summarization": 0.93,
+        "translation": 0.88
+      }
+    },
+    {
+      "draft_model": "meta-llama/Llama-3-8B-Instruct",
+      "target_model": "meta-llama/Llama-3-70B-Instruct",
+      "temperature": 0.3,
+      "acceptance_rate": 0.94,
+      "effective_speedup": 3.5,
+      "optimal_draft_length": 8,
+      "adaptive_k_range": [5, 10],
+      "acceptance_by_position": [0.98, 0.97, 0.95, 0.94, 0.93, 0.91, 0.89, 0.86],
+      "acceptance_by_task": {
+        "chat": 0.96,
+        "code": 0.91,
+        "reasoning": 0.89,
+        "summarization": 0.97,
+        "translation": 0.94
+      }
+    },
+    {
+      "draft_model": "meta-llama/Llama-3-1B",
+      "target_model": "meta-llama/Llama-3-70B-Instruct",
+      "temperature": 0.8,
+      "acceptance_rate": 0.69,
+      "effective_speedup": 2.1,
+      "optimal_draft_length": 4,
+      "adaptive_k_range": [2, 6],
+      "acceptance_by_position": [0.82, 0.72, 0.64, 0.56],
+      "acceptance_by_task": {
+        "chat": 0.73,
+        "code": 0.57,
+        "reasoning": 0.54,
+        "summarization": 0.77,
+        "translation": 0.71
+      }
+    },
+    {
+      "draft_model": "microsoft/Phi-3-mini-4k-instruct",
+      "target_model": "meta-llama/Llama-3-70B-Instruct",
+      "temperature": 0.8,
+      "acceptance_rate": 0.63,
+      "effective_speedup": 1.9,
+      "optimal_draft_length": 3,
+      "adaptive_k_range": [2, 5],
+      "acceptance_by_position": [0.76, 0.63, 0.51],
+      "acceptance_by_task": {
+        "chat": 0.67,
+        "code": 0.54,
+        "reasoning": 0.49,
+        "summarization": 0.69,
+        "translation": 0.64
+      }
+    },
+    {
+      "draft_model": "google/gemma-2b-it",
+      "target_model": "meta-llama/Llama-3-70B-Instruct",
+      "temperature": 0.8,
+      "acceptance_rate": 0.66,
+      "effective_speedup": 2.0,
+      "optimal_draft_length": 4,
+      "adaptive_k_range": [2, 5],
+      "acceptance_by_position": [0.79, 0.68, 0.59, 0.52],
+      "acceptance_by_task": {
+        "chat": 0.70,
+        "code": 0.57,
+        "reasoning": 0.52,
+        "summarization": 0.73,
+        "translation": 0.67
+      }
+    },
+    {
+      "draft_model": "meta-llama/Llama-3-8B-Instruct",
+      "target_model": "mistralai/Mixtral-8x22B-Instruct-v0.1",
+      "temperature": 0.8,
+      "acceptance_rate": 0.79,
+      "effective_speedup": 2.7,
+      "optimal_draft_length": 5,
+      "adaptive_k_range": [3, 7],
+      "acceptance_by_position": [0.90, 0.83, 0.77, 0.72, 0.66],
+      "acceptance_by_task": {
+        "chat": 0.83,
+        "code": 0.72,
+        "reasoning": 0.69,
+        "summarization": 0.86,
+        "translation": 0.80
+      }
+    }
+  ]
+}

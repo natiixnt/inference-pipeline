@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "inference-pipeline"
+version = "2.0.0"
+description = "Distributed LLM inference with adaptive batching, KV-cache sharing, and speculative decoding"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+authors = [
+    { name = "Inference Pipeline Contributors" },
+]
+
+dependencies = [
+    "ray[serve]>=2.9.0",
+    "grpcio>=1.60.0",
+    "grpcio-tools>=1.60.0",
+    "protobuf>=4.25.0",
+    "torch>=2.2.0",
+    "triton-client>=2.41.0",
+    "confluent-kafka>=2.3.0",
+    "prometheus-client>=0.19.0",
+    "numpy>=1.26.0",
+    "pydantic>=2.5.0",
+    "structlog>=23.2.0",
+    "opentelemetry-api>=1.22.0",
+    "opentelemetry-sdk>=1.22.0",
+    "opentelemetry-exporter-otlp>=1.22.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-benchmark>=4.0.0",
+    "mypy>=1.8.0",
+    "ruff>=0.1.9",
+    "pre-commit>=3.6.0",
+]
+cuda = [
+    "cupy-cuda12x>=13.0.0",
+    "flash-attn>=2.5.0",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "ANN", "B", "A", "COM", "C4", "PT"]
+ignore = ["ANN101", "ANN102"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+markers = [
+    "gpu: requires GPU hardware",
+    "slow: long-running benchmarks",
+]

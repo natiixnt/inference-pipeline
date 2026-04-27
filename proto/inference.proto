@@ -1,0 +1,222 @@
+syntax = "proto3";
+
+package inference.v1;
+
+option go_package = "github.com/natiixnt/inference-pipeline/gen/go/inference/v1";
+
+// InferenceService provides high-throughput LLM inference with streaming support.
+service InferenceService {
+  // Generate text from a prompt (unary).
+  rpc Generate(GenerateRequest) returns (GenerateResponse);
+
+  // Stream generated tokens as they are produced.
+  rpc GenerateStream(GenerateRequest) returns (stream GenerateStreamResponse);
+
+  // Check model availability and current load.
+  rpc GetModelStatus(ModelStatusRequest) returns (ModelStatusResponse);
+
+  // Health check for load balancer integration.
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+}
+
+// ModelManagementService handles model lifecycle operations.
+service ModelManagementService {
+  // Load a new model or update an existing one.
+  rpc LoadModel(LoadModelRequest) returns (LoadModelResponse);
+
+  // Unload a model, freeing GPU resources.
+  rpc UnloadModel(UnloadModelRequest) returns (UnloadModelResponse);
+
+  // List all loaded models and their status.
+  rpc ListModels(ListModelsRequest) returns (ListModelsResponse);
+
+  // Trigger a canary deployment for a model update.
+  rpc CanaryDeploy(CanaryDeployRequest) returns (CanaryDeployResponse);
+}
+
+message GenerateRequest {
+  string model_id = 1;
+  string prompt = 2;
+
+  // Generation parameters
+  int32 max_tokens = 3;
+  float temperature = 4;
+  float top_p = 5;
+  float top_k = 6;
+  float repetition_penalty = 7;
+  repeated string stop_sequences = 8;
+
+  // Routing hints
+  string session_id = 9;
+  Priority priority = 10;
+
+  // Optional: pre-tokenized input (skips tokenization)
+  repeated int32 input_token_ids = 11;
+}
+
+message GenerateResponse {
+  string request_id = 1;
+  string model_id = 2;
+  string text = 3;
+  repeated int32 token_ids = 4;
+
+  // Performance metrics
+  GenerationMetrics metrics = 5;
+
+  // Finish reason
+  FinishReason finish_reason = 6;
+}
+
+message GenerateStreamResponse {
+  string request_id = 1;
+  string token_text = 2;
+  int32 token_id = 3;
+  bool is_finished = 4;
+  FinishReason finish_reason = 5;
+
+  // Included only on first token
+  float time_to_first_token_ms = 6;
+
+  // Included on final token
+  GenerationMetrics metrics = 7;
+}
+
+message GenerationMetrics {
+  float time_to_first_token_ms = 1;
+  float total_latency_ms = 2;
+  int32 tokens_generated = 3;
+  float tokens_per_second = 4;
+  int32 prompt_tokens = 5;
+  float queue_wait_ms = 6;
+
+  // Speculative decoding stats
+  float speculative_acceptance_rate = 7;
+  int32 speculative_tokens_saved = 8;
+}
+
+message ModelStatusRequest {
+  string model_id = 1;
+}
+
+message ModelStatusResponse {
+  string model_id = 1;
+  ModelState state = 2;
+  int32 num_replicas = 3;
+  int32 active_requests = 4;
+  int32 queue_depth = 5;
+  float avg_latency_ms = 6;
+  float p95_latency_ms = 7;
+  float tokens_per_second = 8;
+  repeated ReplicaInfo replicas = 9;
+}
+
+message ReplicaInfo {
+  string replica_id = 1;
+  string device_id = 2;
+  string gpu_type = 3;
+  float memory_utilization = 4;
+  float compute_utilization = 5;
+  int32 current_batch_size = 6;
+  ReplicaHealth health = 7;
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+  bool healthy = 1;
+  string version = 2;
+  int64 uptime_seconds = 3;
+  map<string, string> component_status = 4;
+}
+
+message LoadModelRequest {
+  string model_id = 1;
+  string model_path = 2;
+  int32 tensor_parallel_degree = 3;
+  int32 max_batch_size = 4;
+  int32 max_sequence_length = 5;
+  repeated string preferred_gpu_types = 6;
+  bool enable_speculative = 7;
+  string draft_model_path = 8;
+  float kv_cache_pool_gb = 9;
+}
+
+message LoadModelResponse {
+  string model_id = 1;
+  bool success = 2;
+  string error_message = 3;
+  int32 replicas_created = 4;
+}
+
+message UnloadModelRequest {
+  string model_id = 1;
+  bool graceful = 2;  // Wait for in-flight requests to complete
+}
+
+message UnloadModelResponse {
+  bool success = 1;
+  string error_message = 2;
+  int32 requests_drained = 3;
+}
+
+message ListModelsRequest {}
+
+message ListModelsResponse {
+  repeated ModelInfo models = 1;
+}
+
+message ModelInfo {
+  string model_id = 1;
+  ModelState state = 2;
+  int32 num_replicas = 3;
+  int64 total_requests_served = 4;
+  float current_tps = 5;
+}
+
+message CanaryDeployRequest {
+  string model_id = 1;
+  string new_model_path = 2;
+  float traffic_percentage = 3;  // 0.0 to 1.0
+  float quality_threshold = 4;   // Minimum quality score to promote
+  int32 evaluation_requests = 5; // Number of requests before decision
+}
+
+message CanaryDeployResponse {
+  string deployment_id = 1;
+  bool accepted = 2;
+  string error_message = 3;
+}
+
+enum Priority {
+  PRIORITY_UNSPECIFIED = 0;
+  PRIORITY_CRITICAL = 1;
+  PRIORITY_REALTIME = 2;
+  PRIORITY_HIGH = 3;
+  PRIORITY_NORMAL = 4;
+  PRIORITY_LOW = 5;
+  PRIORITY_PREEMPTIBLE = 6;
+}
+
+enum FinishReason {
+  FINISH_REASON_UNSPECIFIED = 0;
+  FINISH_REASON_COMPLETE = 1;     // Natural end of generation (EOS)
+  FINISH_REASON_MAX_TOKENS = 2;   // Hit max_tokens limit
+  FINISH_REASON_STOP_SEQUENCE = 3; // Hit a stop sequence
+  FINISH_REASON_TIMEOUT = 4;       // Request timed out
+  FINISH_REASON_PREEMPTED = 5;     // Preempted by higher-priority request
+}
+
+enum ModelState {
+  MODEL_STATE_UNSPECIFIED = 0;
+  MODEL_STATE_LOADING = 1;
+  MODEL_STATE_READY = 2;
+  MODEL_STATE_DRAINING = 3;
+  MODEL_STATE_ERROR = 4;
+}
+
+enum ReplicaHealth {
+  REPLICA_HEALTH_UNSPECIFIED = 0;
+  REPLICA_HEALTH_HEALTHY = 1;
+  REPLICA_HEALTH_DEGRADED = 2;
+  REPLICA_HEALTH_UNHEALTHY = 3;
+}

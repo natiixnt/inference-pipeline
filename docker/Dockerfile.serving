@@ -1,0 +1,45 @@
+FROM nvcr.io/nvidia/tritonserver:24.01-py3 AS base
+
+# System dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+WORKDIR /app
+COPY pyproject.toml .
+RUN pip install --no-cache-dir -e ".[cuda]"
+
+# Copy application code
+COPY src/ src/
+COPY proto/ proto/
+
+# Generate gRPC stubs
+RUN python -m grpc_tools.protoc \
+    -I proto/ \
+    --python_out=src/inference_pipeline/generated/ \
+    --grpc_python_out=src/inference_pipeline/generated/ \
+    proto/inference.proto
+
+# Health check script
+COPY docker/healthcheck.py /app/healthcheck.py
+
+# Runtime configuration
+ENV PYTHONPATH=/app/src
+ENV PYTHONUNBUFFERED=1
+ENV RAY_DEDUP_LOGS=0
+ENV CUDA_DEVICE_ORDER=PCI_BUS_ID
+
+# Prometheus metrics port
+EXPOSE 9090
+# gRPC serving port
+EXPOSE 50051
+# Ray dashboard
+EXPOSE 8265
+
+HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=3 \
+    CMD python /app/healthcheck.py
+
+ENTRYPOINT ["python", "-m", "inference_pipeline.serving"]
